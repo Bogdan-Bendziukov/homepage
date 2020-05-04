@@ -4,11 +4,51 @@
     <meta charset="UTF-8" />
     <title>Résumé</title>
 	<link rel="stylesheet" href="https://volodymyrkushnir.com/assets/stylesheets/base.css">
+	<style>
+	#bike {
+		position: fixed;
+		transform: translateX(-100%);
+		left: 0;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		z-index: 999;
+		transition: transform 500ms ease-in;
+		width: 100%;
+		opacity: 0;
+	}
+	#bike.move {
+		transform: translateX(100%);
+		opacity: 1;
+	}
+	.feature {
+		border-bottom: 1px dashed;
+		cursor: pointer;
+	}
+	.feature:hover {
+		color: #781dd8;
+	}
+	#html {
+		position: fixed;
+		transform: translate(100%, 100%) rotate(-12deg);
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		z-index: 999;
+		transition: transform 500ms ease-in;
+		width: 250px;
+		height: auto;
+		cursor: pointer;
+	}
+	#html.move {
+		transform: translate(0%, 0%) rotate(-12deg);
+	}
+	</style>
   </head>
   <body>
     <main>
 	  <article>
-		<div class="page" style="border-color: midnightblue;">
+		<div class="page" style="border-color: #781dd8;">
 			<div class="stackable grid">
 			  <div class="row">
 				<div class="three wide center aligned column">
@@ -142,9 +182,9 @@
 				<div class="six wide column">
 					<section>
 						<h3>ME</h3>
-						Люблю кататься на вельчике.<br>
+						Люблю кататься на <span id="bike-link" class="feature">вельчике</span>.<br>
 						Обожаю рок / хардкор, хожу на концерты, концерт-туризм. Учусь играть на барабанах.<br>
-						Ну и конечно I know H.T.M.L.
+						Ну и конечно <span id="html-link" class="feature">I know H.T.M.L.</span>
 					</section>
 				</div>
 			  </div>
@@ -152,5 +192,53 @@
 		</div>
 	  </article>
 	</main>
+	<div id="bike">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M400 96a48 48 0 1 0-48-48 48 48 0 0 0 48 48zm-4 121a31.9 31.9 0 0 0 20 7h64a32 32 0 0 0 0-64h-52.78L356 103a31.94 31.94 0 0 0-40.81.68l-112 96a32 32 0 0 0 3.08 50.92L288 305.12V416a32 32 0 0 0 64 0V288a32 32 0 0 0-14.25-26.62l-41.36-27.57 58.25-49.92zm116 39a128 128 0 1 0 128 128 128 128 0 0 0-128-128zm0 192a64 64 0 1 1 64-64 64 64 0 0 1-64 64zM128 256a128 128 0 1 0 128 128 128 128 0 0 0-128-128zm0 192a64 64 0 1 1 64-64 64 64 0 0 1-64 64z"></path></svg>
+	</div>
+	<img src="https://img-9gag-fun.9cache.com/photo/a6OBN09_700bwp.webp" alt="I know html" id="html" />
+	<script type="text/javascript">
+	const bike_link = document.getElementById('bike-link');
+	const html_link = document.getElementById('html-link');
+	const bike = document.getElementById('bike');
+	const html = document.getElementById('html');
+	
+	whichTransitionEvent = () => {
+		let t,
+			el = document.createElement("fakeelement");
+
+		let transitions = {
+			"transition"      : "transitionend",
+			"OTransition"     : "oTransitionEnd",
+			"MozTransition"   : "transitionend",
+			"WebkitTransition": "webkitTransitionEnd"
+		}
+
+		for (t in transitions){
+			if (el.style[t] !== undefined){
+				return transitions[t];
+			}
+		}
+	}
+
+	let transitionEvent = whichTransitionEvent(),
+		item = document.querySelector('.circle'),
+		message = document.querySelector('.footer'),
+		counter = 1;
+	
+	bike_link.addEventListener("click", () => {
+		bike.classList.toggle("move");
+		bike.addEventListener(transitionEvent, transitionEndCallback);
+	})
+	html_link.addEventListener("click", () => {
+		html.classList.toggle("move");
+	})
+	html.addEventListener("click", () => {
+		html.classList.toggle("move");
+	})
+	transitionEndCallback = (e) => {
+		e.target.removeEventListener(transitionEvent, transitionEndCallback);
+		e.target.classList.remove('move');
+	}
+	</script>
   </body>
 </html>
