@@ -203,11 +203,14 @@
     </div>
     <img src="https://img-9gag-fun.9cache.com/photo/a6OBN09_700bwp.webp" alt="I know html" id="html" />
     <script type="text/javascript">
+	  // static DOM elements
       const bike_link = document.getElementById('bike-link');
       const html_link = document.getElementById('html-link');
       const bike = document.getElementById('bike');
       const html = document.getElementById('html');
       
+	  // detect when css animation ends
+	  // thanks to https://pineco.de/detect-the-end-of-transition-and-animation-with-the-help-of-javascript/
       whichTransitionEvent = () => {
       	let t,
       		el = document.createElement("fakeelement");
@@ -226,11 +229,10 @@
       	}
       }
       
-      let transitionEvent = whichTransitionEvent(),
-      	item = document.querySelector('.circle'),
-      	message = document.querySelector('.footer'),
-      	counter = 1;
+	  // css transition event
+      let transitionEvent = whichTransitionEvent();
       
+	  // click handlers
       bike_link.addEventListener("click", () => {
       	bike.classList.toggle("move");
       	bike.addEventListener(transitionEvent, transitionEndCallback);
@@ -241,6 +243,8 @@
       html.addEventListener("click", () => {
       	html.classList.toggle("move");
       })
+	  
+	  // fires on animation end
       transitionEndCallback = (e) => {
       	e.target.removeEventListener(transitionEvent, transitionEndCallback);
       	e.target.classList.remove('move');
